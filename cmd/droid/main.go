@@ -8,11 +8,12 @@ import (
 )
 
 func main() {
+	const addr = "0.0.0.0:9090"
 	app, err := app.NewApp()
 	if err != nil {
 		fmt.Println("Got Error during initialization")
 	}
 
 	server := server.NewServer(app)
-	server.Run(":9090")
+	server.Run(addr)
 }
