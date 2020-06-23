@@ -1,41 +1,35 @@
 package healthz
 
 import (
+	"errors"
 	"math/rand"
 )
 
-// HealthStatus represents current health of microservice and it is used to serialize response.
-type HealthStatus struct {
-	Status string `json:"status"`
-}
-
 // Service returns
 type Service interface {
-	Health() HealthStatus
+	Health() (string, error)
 }
 
 //
 type service struct {
-	status string
 }
 
 // NewService returns a new Service.
 func NewService() Service {
-	return &service{
-		status: "0K",
-	}
+	return &service{}
 }
 
 // Health returns current healths.
-func (s *service) Health() HealthStatus {
-	var status string
+func (s *service) Health() (string, error) {
+	var result string
+	var err error
 	if rand.Intn(10) > 3 {
-		status = "Node ERROR: Node not responding"
+		err = errors.New("Node ERROR: Node not responding")
+		result = ""
 	} else {
-		status = "OK"
+		err = nil
+		result = "OK"
 	}
 
-	return HealthStatus{
-		Status: status,
-	}
+	return result, err
 }
