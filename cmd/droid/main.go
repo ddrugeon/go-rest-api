@@ -1,19 +1,21 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/ddrugeon/go-rest-api/internal/app"
 	"github.com/ddrugeon/go-rest-api/internal/server"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	const addr = "0.0.0.0:9090"
-	app, err := app.NewApp()
+	log := logrus.New()
+	log.Level = logrus.InfoLevel
+	log.SetFormatter(&logrus.JSONFormatter{})
+
+	app, err := app.NewApp(log)
 	if err != nil {
-		fmt.Println("Got Error during initialization")
+		log.Println("Got Error during initialization")
 	}
 
 	server := server.NewServer(app)
-	server.Run(addr)
+	server.Run()
 }
