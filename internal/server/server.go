@@ -8,8 +8,10 @@ import (
 	"syscall"
 
 	"github.com/ddrugeon/go-rest-api/internal/app"
+	"github.com/ddrugeon/go-rest-api/internal/middlewares"
 	"github.com/ddrugeon/go-rest-api/internal/router"
 	"github.com/gorilla/mux"
+	"github.com/urfave/negroni"
 )
 
 type Server struct {
@@ -18,6 +20,7 @@ type Server struct {
 }
 
 func NewServer(app *app.App) Server {
+	router.InitRoutes(app)
 	return Server{
 		router: router.NewRouter(app),
 	}
@@ -33,7 +36,10 @@ func (s *Server) Run(addr string) {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL, os.Interrupt, os.Kill)
 
 	go func() {
-		log.Fatal(http.ListenAndServe(addr, s.router))
+		n := negroni.Classic()
+		n.Use(middlewares.NewJSONContentTypeMiddleware())
+		n.UseHandler(s.router)
+		log.Fatal(http.ListenAndServe(addr, n))
 
 	}()
 

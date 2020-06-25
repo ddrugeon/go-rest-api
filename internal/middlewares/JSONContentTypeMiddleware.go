@@ -2,10 +2,17 @@ package middlewares
 
 import "net/http"
 
+type JSONContentTypeMiddleware struct{}
+
+func NewJSONContentTypeMiddleware() *JSONContentTypeMiddleware {
+	return &JSONContentTypeMiddleware{}
+}
+
 // JSONContentTypeMiddleware will add the header 'content-type: application/json; charset=UTF-8' for all endpoints
-func JSONContentTypeMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Add("content-type", "application/json; charset=UTF-8")
-		next.ServeHTTP(w, r)
-	})
+func (m *JSONContentTypeMiddleware) ServeHTTP(w http.ResponseWriter, req *http.Request, next http.HandlerFunc) {
+	// Add Content-Type header
+	w.Header().Add("content-type", "application/json; charset=UTF-8")
+
+	// Call the next middleware handler
+	next(w, req)
 }
