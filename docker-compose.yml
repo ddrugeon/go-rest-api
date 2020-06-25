@@ -1,0 +1,10 @@
+version: '3.4'
+services:
+  droid:
+    build:
+      context: .
+    container_name: api-droids
+    volumes:
+      - .:/go/src/github.com/andream16/toy
+    ports:
+      - 9090:9090
