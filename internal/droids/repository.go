@@ -20,7 +20,6 @@ func NewRepository() Repository {
 	values := make(map[string]Droid)
 	db := InMemory{droids: values}
 
-
 	droid := Droid{
 		ID:       "1",
 		Name:     "R2-D2",
@@ -34,23 +33,23 @@ func NewRepository() Repository {
 	db.put(droid)
 
 	droid = Droid{
-		ID:       "2",
-		Name:     "BB-8",
-		Type:     "Droide astromecano",
-		Class:    "Droide Astromech",
-		Model:    "Unite BB",
-		Height:   "0,67",
+		ID:     "2",
+		Name:   "BB-8",
+		Type:   "Droide astromecano",
+		Class:  "Droide Astromech",
+		Model:  "Unite BB",
+		Height: "0,67",
 	}
 	db.put(droid)
 
 	droid = Droid{
-		ID:       "3",
-		Name:     "C-3PO",
-		Company:  "Anakin Skywalker",
-		Type:     "Droide Social",
-		Class:    "Droide de protocole",
-		Model:    "3PO",
-		Height:   "1,67",
+		ID:      "3",
+		Name:    "C-3PO",
+		Company: "Anakin Skywalker",
+		Type:    "Droide Social",
+		Class:   "Droide de protocole",
+		Model:   "3PO",
+		Height:  "1,67",
 	}
 	db.put(droid)
 
@@ -62,7 +61,7 @@ func (im *InMemory) Get(ctx context.Context) []Droid {
 	var values []Droid
 	for _, value := range im.droids {
 		values = append(values, value)
-	} 
+	}
 	return values
 }
 
