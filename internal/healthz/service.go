@@ -23,7 +23,7 @@ func NewService() Service {
 func (s *service) Health() (string, error) {
 	var result string
 	var err error
-	if rand.Intn(10) > 3 {
+	if rand.Intn(100) > 90 {
 		err = errors.New("Node ERROR: Node not responding")
 		result = ""
 	} else {
