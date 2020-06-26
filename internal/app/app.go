@@ -19,7 +19,7 @@ func NewApp(logger *logrus.Logger) (*App, error) {
 	return &App{
 		HealthzService: healthz.NewService(),
 		DroidService:   droids.NewService(droids.NewRepository()),
-		Port:           "localhost:9090",
+		Port:           "0.0.0.0:9090",
 		Logger:         logger,
 	}, nil
 }
