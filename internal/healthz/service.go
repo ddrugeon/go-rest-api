@@ -1,10 +1,5 @@
 package healthz
 
-import (
-	"errors"
-	"math/rand"
-)
-
 // Service returns
 type Service interface {
 	Health() (string, error)
@@ -21,15 +16,5 @@ func NewService() Service {
 
 // Health returns current healths.
 func (s *service) Health() (string, error) {
-	var result string
-	var err error
-	if rand.Intn(100) > 90 {
-		err = errors.New("Node ERROR: Node not responding")
-		result = ""
-	} else {
-		err = nil
-		result = "OK"
-	}
-
-	return result, err
+	return "OK", nil
 }
