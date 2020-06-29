@@ -26,6 +26,12 @@ func InitRoutes(app *app.App) {
 			handler: handlers.Health(app),
 		},
 		{
+			name:    "version",
+			method:  http.MethodGet,
+			path:    "/version",
+			handler: handlers.Version(app),
+		},
+		{
 			name:    "getAllDroids",
 			method:  http.MethodGet,
 			path:    "/droids",

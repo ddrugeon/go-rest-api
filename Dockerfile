@@ -5,10 +5,10 @@ LABEL Maintainer="zebeurton@gmail.com"
 WORKDIR /app
 COPY go.mod go.sum ./
 
-RUN go mod download
+RUN go mod download && go get -u -v github.com/ahmetb/govvv
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -installsuffix cgo -ldflags "-s -w -X main.commit=${COMMIT}" -o ./app ./cmd/droid
+RUN CGO_ENABLED=0 GOOS=linux go build -mod vendor -a -ldflags "$(govvv -flags)" -o ./app ./cmd/droid
 
 FROM alpine:latest
 

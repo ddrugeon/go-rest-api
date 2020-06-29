@@ -13,13 +13,25 @@ type App struct {
 	Port           string
 	Logger         *logrus.Logger
 	db             droids.InMemory
+	Version        Version
 }
 
-func NewApp(logger *logrus.Logger) (*App, error) {
+type Version struct {
+	GitCommit string
+	BuildDate string
+	Version   string
+}
+
+func NewApp(logger *logrus.Logger, gitCommit string, buildDate string, version string) (*App, error) {
 	return &App{
 		HealthzService: healthz.NewService(),
 		DroidService:   droids.NewService(droids.NewRepository()),
 		Port:           "0.0.0.0:9090",
 		Logger:         logger,
+		Version: Version{
+			GitCommit: gitCommit,
+			BuildDate: buildDate,
+			Version:   version,
+		},
 	}, nil
 }
