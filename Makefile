@@ -14,7 +14,8 @@ build: vendor ## Build docker image
 	go fmt ./...
 
 	@echo "building Docker Image..."
-	docker build . -t zebeurton/go-rest-api
+	docker build . -t zebeurton/go-rest-api:latest
+	docker build . -t zebeurton/go-rest-api:$(VERSION)
 
 run: test vendor ## Runs locally docker container for development purpose
 	docker-compose up -d
@@ -28,6 +29,15 @@ vendor: ## Install dependencies for server
 test: ## Runs tests
 	go fmt ./...
 	go test -vet all ./... -count=1 -race
+
+bump_patch: ## Release a patch version
+	./scripts/bump.sh --patch
+
+bump_minor: ## Release a minor version
+	./scripts/bump.sh --minor
+
+bump_major: ## Release a major version
+	./scripts/bump.sh --major
 
 version: ## Echo current version
 	@cat VERSION
