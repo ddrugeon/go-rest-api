@@ -4,6 +4,8 @@ go 1.14
 
 require (
 	github.com/ahmetb/govvv v0.3.0 // indirect
+	github.com/garyburd/redigo v1.6.0 // indirect
+	github.com/gomodule/redigo v1.8.2
 	github.com/gorilla/mux v1.7.4
 	github.com/meatballhat/negroni-logrus v1.1.0
 	github.com/sirupsen/logrus v1.6.0

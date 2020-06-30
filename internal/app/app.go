@@ -1,8 +1,9 @@
 package app
 
 import (
-	"github.com/ddrugeon/go-rest-api/internal/droids"
-	"github.com/ddrugeon/go-rest-api/internal/healthz"
+	"github.com/ddrugeon/go-rest-api/internal/model/db"
+	"github.com/ddrugeon/go-rest-api/internal/services/droids"
+	"github.com/ddrugeon/go-rest-api/internal/services/healthz"
 	"github.com/sirupsen/logrus"
 )
 
@@ -12,7 +13,7 @@ type App struct {
 	DroidService   droids.Service
 	Port           string
 	Logger         *logrus.Logger
-	db             droids.InMemory
+	Repository     db.Repository
 	Version        Version
 }
 
@@ -23,9 +24,11 @@ type Version struct {
 }
 
 func NewApp(logger *logrus.Logger, gitCommit string, buildDate string, version string) (*App, error) {
+	repo := db.NewMemoryRepository()
+
 	return &App{
-		HealthzService: healthz.NewService(),
-		DroidService:   droids.NewService(droids.NewRepository()),
+		HealthzService: healthz.NewService(repo),
+		DroidService:   droids.NewService(repo),
 		Port:           "0.0.0.0:9090",
 		Logger:         logger,
 		Version: Version{
