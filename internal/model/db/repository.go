@@ -9,6 +9,7 @@ import (
 type Repository interface {
 	Get(ctx context.Context) []model.Droid
 	GetByID(ctx context.Context, id string) (model.Droid, error)
-	Put(d model.Droid)
-	Ping() (string, error)
+	Put(d model.Droid) error
+	Ping() error
+	Version() string
 }

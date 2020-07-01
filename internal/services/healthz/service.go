@@ -21,7 +21,7 @@ func NewService(r db.Repository) Service {
 
 // Health returns current healths.
 func (s *service) Health() (string, error) {
-	_, err := s.db.Ping()
+	err := s.db.Ping()
 
 	if err != nil {
 		return "NOK", err
