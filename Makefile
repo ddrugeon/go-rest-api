@@ -9,14 +9,21 @@ help:
 	@echo "go-rest-api: "
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-build: vendor ## Build docker image
+build: vendor ## Build docker image for dev purpose
 	@echo "formatting sources"
 	go fmt ./...
 
-	@echo "building Docker Image..."
+	@echo "building latest docker Image..."
 	docker build . -t zebeurton/go-rest-api:latest
-	docker build . -t zebeurton/go-rest-api:$(VERSION)
 
+release: ## Build docker image to release a new version
+	@echo "formatting sources"
+	go fmt ./...
+
+	@echo "building latest docker Image..."
+	docker build . -t zebeurton/go-rest-api:$(VERSION)
+	docker push zebeurton/go-rest-api:$(VERSION)
+	
 run: test vendor ## Runs locally docker container for development purpose
 	docker-compose up -d
 
