@@ -24,8 +24,19 @@ type Version struct {
 	Version   string
 }
 
-func NewApp(logger *logrus.Logger, gitCommit string, buildDate string, version string) (*App, error) {
-	repo := db.NewRedisRepository(":6379")
+func NewApp(logger *logrus.Logger, gitCommit string, buildDate string, version string, database_url string, server_port string) (*App, error) {
+	if database_url == "" {
+		database_url = "localhost"
+	}
+
+	if server_port == "" {
+		server_port = "9090"
+	}
+
+	logger.Debugln("Database URL: ", database_url)
+	logger.Debugln("Server port: ", server_port)
+
+	repo := db.NewRedisRepository(database_url + ":6379")
 
 	droid := model.Droid{
 		ID:       "droid:1",
@@ -63,7 +74,7 @@ func NewApp(logger *logrus.Logger, gitCommit string, buildDate string, version s
 	return &App{
 		HealthzService: healthz.NewService(repo),
 		DroidService:   droids.NewService(repo),
-		Port:           "0.0.0.0:9090",
+		Port:           "0.0.0.0:" + server_port,
 		Logger:         logger,
 		Version: Version{
 			GitCommit: gitCommit,

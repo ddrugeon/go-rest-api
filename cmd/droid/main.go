@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/ddrugeon/go-rest-api/internal/app"
 	"github.com/ddrugeon/go-rest-api/internal/server"
 	"github.com/sirupsen/logrus"
@@ -27,15 +30,18 @@ var (
 )
 
 func main() {
-	log := logrus.New()
-	log.Level = logrus.InfoLevel
-	log.SetFormatter(&logrus.JSONFormatter{})
+	logger := logrus.New()
+	logger.Level = logrus.DebugLevel
+	logger.SetFormatter(&logrus.JSONFormatter{})
 
-	log.Debugln("GitCommit: ", GitCommit)
-	log.Debugln("BuildDate: ", BuildDate)
-	log.Debugln("Version: ", Version)
+	databaseUrl := os.Getenv("REDIS_URL")
+	port := os.Getenv("PORT")
 
-	app, err := app.NewApp(log, GitCommit, BuildDate, Version)
+	logger.Debugln("GitCommit: ", GitCommit)
+	logger.Debugln("BuildDate: ", BuildDate)
+	logger.Debugln("Version: ", Version)
+
+	app, err := app.NewApp(logger, GitCommit, BuildDate, Version, databaseUrl, port)
 	if err != nil {
 		log.Println("Got Error during initialization")
 	}
